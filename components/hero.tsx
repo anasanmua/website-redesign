@@ -53,8 +53,8 @@ export function Hero() {
               className="absolute inset-0 rounded-full bg-primary-foreground/10"
             />
             <Image
-              src="/assets/banner.png"
-              alt="Ilustración de una científica con bata frente a una pizarra"
+              src="/assets/banner-no-text.png"
+              alt="Ilustración de una científica con bata sosteniendo un matraz frente a una pizarra con el mapa de Andalucía"
               fill
               priority
               className="object-contain p-4"
