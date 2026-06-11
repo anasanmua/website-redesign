@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { Mail, Youtube } from 'lucide-react'
+import { Mail, Play } from 'lucide-react'
 import { Logo } from '@/components/logo'
 import { navLinks, siteConfig } from '@/lib/site-data'
 
@@ -29,7 +29,7 @@ export function SiteFooter() {
                 className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground transition-opacity hover:opacity-90"
                 aria-label="Canal de YouTube"
               >
-                <Youtube className="h-4 w-4" />
+                <Play className="h-4 w-4" />
               </a>
             </div>
           </div>

@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { Menu, X } from 'lucide-react'
 import { Logo } from '@/components/logo'
-import { Button } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button'
 import { navLinks } from '@/lib/site-data'
 import { cn } from '@/lib/utils'
 
@@ -15,7 +15,7 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/70 bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70">
-      <div className="mx-auto flex h-18 max-w-6xl items-center justify-between gap-4 px-4 py-3 md:px-6">
+      <div className="mx-auto flex h-20 max-w-6xl items-center justify-between gap-4 px-4 py-3 md:px-6">
         <Logo />
 
         <nav className="hidden items-center gap-1 lg:flex">
@@ -42,9 +42,12 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden lg:block">
-          <Button asChild className="rounded-full">
-            <Link href="/participa">Solicitar visita</Link>
-          </Button>
+          <Link
+            href="/participa"
+            className={cn(buttonVariants({ size: 'lg' }), 'rounded-full px-5')}
+          >
+            Solicitar visita
+          </Link>
         </div>
 
         <button
@@ -82,11 +85,16 @@ export function SiteHeader() {
                 </Link>
               )
             })}
-            <Button asChild className="mt-2 rounded-full">
-              <Link href="/participa" onClick={() => setOpen(false)}>
-                Solicitar visita
-              </Link>
-            </Button>
+            <Link
+              href="/participa"
+              onClick={() => setOpen(false)}
+              className={cn(
+                buttonVariants({ size: 'lg' }),
+                'mt-2 rounded-full',
+              )}
+            >
+              Solicitar visita
+            </Link>
           </nav>
         </div>
       )}

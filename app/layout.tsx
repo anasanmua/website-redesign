@@ -1,6 +1,8 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata } from 'next'
 import { Inter, Poppins } from 'next/font/google'
+import { SiteHeader } from '@/components/site-header'
+import { SiteFooter } from '@/components/site-footer'
 import './globals.css'
 
 const inter = Inter({
@@ -36,8 +38,10 @@ export default function RootLayout({
       lang="es"
       className={`${inter.variable} ${poppins.variable} bg-background`}
     >
-      <body className="font-sans antialiased">
-        {children}
+      <body className="flex min-h-screen flex-col font-sans antialiased">
+        <SiteHeader />
+        <main className="flex-1">{children}</main>
+        <SiteFooter />
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
