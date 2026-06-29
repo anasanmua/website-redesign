@@ -4,6 +4,8 @@ import { useState } from 'react'
 import { Check, Send } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
+const CONTACT_EMAIL = 'proyecto@cientificacoleandaluz.es'
+
 const roles = [
   'Profesorado / centro educativo',
   'Familia / AMPA',
@@ -30,6 +32,28 @@ export function ParticipaForm() {
 
     setErrors(next)
     if (Object.keys(next).length === 0) {
+      const name = (data.get('name') as string) ?? ''
+      const role = (data.get('role') as string) ?? ''
+      const center = (data.get('center') as string) ?? ''
+      const message = (data.get('message') as string) ?? ''
+
+      const subject = `Solicitud de participación – ${name}`
+      const body = [
+        `Nombre: ${name}`,
+        `Correo: ${email}`,
+        `Perfil: ${role}`,
+        center.trim() ? `Centro / organización: ${center}` : null,
+        '',
+        'Mensaje:',
+        message,
+      ]
+        .filter((line) => line !== null)
+        .join('\n')
+
+      window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
+        subject,
+      )}&body=${encodeURIComponent(body)}`
+
       setSubmitted(true)
       form.reset()
     }
@@ -45,8 +69,15 @@ export function ParticipaForm() {
           ¡Gracias por tu interés!
         </h2>
         <p className="max-w-md text-muted-foreground">
-          Hemos recibido tu solicitud. Nuestro equipo se pondrá en contacto
-          contigo lo antes posible.
+          Se ha abierto tu gestor de correo con el mensaje dirigido a{' '}
+          <a
+            href={`mailto:${CONTACT_EMAIL}`}
+            className="font-medium text-primary underline-offset-2 hover:underline"
+          >
+            {CONTACT_EMAIL}
+          </a>
+          . Solo tienes que pulsar enviar y nos pondremos en contacto contigo lo
+          antes posible.
         </p>
         <Button
           type="button"
