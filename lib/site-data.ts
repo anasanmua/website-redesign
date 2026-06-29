@@ -58,65 +58,6 @@ export const actionCards: ActionCard[] = [
   },
 ]
 
-export type Activity = {
-  title: string
-  excerpt: string
-  date: string
-  author: string
-  level: string
-}
-
-export const activities: Activity[] = [
-  {
-    title: 'Visita al «Colegio Beaterio Santísima Trinidad»',
-    excerpt:
-      'Descubriendo los colores de la naturaleza en el cole: una jornada para explorar la luz y los pigmentos con el alumnado de primaria.',
-    date: '2025-06-20',
-    author: 'Álvaro V. G.',
-    level: 'Educación Primaria',
-  },
-  {
-    title: 'Visita al CEIP «Pío XII»',
-    excerpt:
-      'Celebramos el Día Internacional de la Luz con experimentos de óptica y mucha ciencia en directo dentro del aula.',
-    date: '2025-05-16',
-    author: 'Álvaro V. G.',
-    level: 'Educación Primaria',
-  },
-  {
-    title: 'Visita al CC «Academia Santa Teresa»',
-    excerpt:
-      '¡Qué gran día de ciencia vivimos! El alumnado se convirtió en investigador por un día con dinámicas prácticas.',
-    date: '2025-05-07',
-    author: 'Álvaro V. G.',
-    level: 'Educación Secundaria',
-  },
-  {
-    title: 'Visita al CEIP «Ntra. Sra. de la Capilla»',
-    excerpt:
-      'Las investigadoras Marta Peña, María José Ayora y Ana Domínguez compartieron su trabajo y resolvieron mil preguntas.',
-    date: '2025-04-08',
-    author: 'Álvaro V. G.',
-    level: 'Educación Primaria',
-  },
-  {
-    title: 'Visita al IES «Las Lagunas»',
-    excerpt:
-      'Charla sobre química en la vida cotidiana y un taller donde el alumnado preparó sus propios indicadores de pH.',
-    date: '2025-03-19',
-    author: 'Álvaro V. G.',
-    level: 'Educación Secundaria',
-  },
-  {
-    title: 'Visita al CEIP «Federico García Lorca»',
-    excerpt:
-      'Una mañana dedicada a la biología: observamos células al microscopio y hablamos de la biodiversidad andaluza.',
-    date: '2025-02-27',
-    author: 'Álvaro V. G.',
-    level: 'Educación Primaria',
-  },
-]
-
 export type Download = {
   title: string
   description: string

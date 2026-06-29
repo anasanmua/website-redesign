@@ -4,10 +4,10 @@ import { ArrowRight, GraduationCap, Lightbulb, Users } from 'lucide-react'
 import { Hero } from '@/components/hero'
 import { StatsBar } from '@/components/stats-bar'
 import { ActionCards } from '@/components/action-cards'
-import { ActivityCard } from '@/components/activity-card'
+import { VisitaCard } from '@/components/visita-card'
 import { SectionHeading } from '@/components/section-heading'
 import { NewsletterSection } from '@/components/newsletter-section'
-import { activities } from '@/lib/site-data'
+import { visitas } from '@/lib/visitas-data'
 
 const pillars = [
   {
@@ -105,8 +105,8 @@ export default function HomePage() {
           </Link>
         </div>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {activities.slice(0, 3).map((activity) => (
-            <ActivityCard key={activity.title} activity={activity} />
+          {visitas.slice(0, 3).map((visita) => (
+            <VisitaCard key={visita.slug} visita={visita} />
           ))}
         </div>
       </section>
