@@ -11,6 +11,33 @@ export const metadata: Metadata = {
     'Conoce el proyecto, su misión y al equipo de investigadoras que acercan la ciencia a los centros educativos de Andalucía.',
 }
 
+const team = [
+  {
+    name: 'Adela Muñoz Páez',
+    role: 'Directora y responsable del proyecto',
+    photo: '/equipo/adela-munoz.jpg',
+    bio: 'Vocal de la Junta directiva de AMIT-Andalucía y Tesorera de AMIT. Catedrática de Química Inorgánica de la Universidad de Sevilla. Junto a sus tareas docentes e investigadoras, dedica los últimos años a la divulgación científica, con la publicación de varios ensayos y biografías.',
+  },
+  {
+    name: 'Susana P. Gaytán Guía',
+    role: 'Presidenta AMIT-Andalucía',
+    photo: '/equipo/susana-gaytan.jpg',
+    bio: 'Profesora de Fisiología en la Facultad de Biología de la Universidad de Sevilla. Su trabajo se centra en las bases del control neural de las funciones vegetativas y el correlato autonómico de las emociones. Convencida de que, bien explicada, la ciencia gusta a todo el mundo, ha hecho de la divulgación un eje central de su trabajo.',
+  },
+  {
+    name: 'Margarita Paneque Sosa',
+    role: 'Delegada del CSIC en Andalucía',
+    photo: '/equipo/margarita-paneque.jpg',
+    bio: 'Delegada del CSIC en Andalucía y Extremadura y directora de la Casa de la Ciencia. Profesora de Investigación del Instituto de Investigaciones Químicas. Con más de 100 trabajos y trece tesis doctorales dirigidas, destacan sus contribuciones a la síntesis de metalbencenos en química organometálica.',
+  },
+  {
+    name: 'Francisco Vega Narváez',
+    role: 'Técnico de laboratorio',
+    photo: '/equipo/francisco-vega.jpg',
+    bio: 'Creador y director de las obras de divulgación científica con perspectiva de género «Científicas, pasado, presente y futuro» y «La Reina Dido». Autor de los relatos de divulgación «Combinación ganadora», «Saponificación» y «La sinrazón de Pi».',
+  },
+]
+
 const values = [
   {
     icon: Target,
@@ -65,15 +92,18 @@ export default function QuienesSomosPage() {
               </p>
             </div>
           </div>
-          <div className="overflow-hidden rounded-3xl border border-border bg-secondary/40">
+          <figure className="overflow-hidden rounded-3xl border border-border bg-secondary/40">
             <Image
-              src="/assets/banner.png"
-              alt="Ilustración de la mascota del proyecto frente a una pizarra"
-              width={800}
-              height={800}
-              className="h-full w-full object-contain p-6"
+              src="/equipo/presentacion-web.jpg"
+              alt="El equipo del proyecto durante la presentación de la web «Una Científica en tu Cole Andaluz»"
+              width={768}
+              height={512}
+              className="h-full w-full object-cover"
             />
-          </div>
+            <figcaption className="px-5 py-3 text-center text-sm text-muted-foreground">
+              Presentación de la web del proyecto, organizado por AMIT-Andalucía.
+            </figcaption>
+          </figure>
         </div>
       </section>
 
@@ -97,6 +127,43 @@ export default function QuienesSomosPage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+        <SectionHeading
+          eyebrow="El equipo"
+          title="Quienes hacen posible el proyecto"
+          description="Un equipo de investigadoras y divulgadores que coordina las visitas y acerca la ciencia a las aulas andaluzas."
+        />
+        <div className="mt-12 grid gap-6 sm:grid-cols-2">
+          {team.map((member) => (
+            <article
+              key={member.name}
+              className="flex flex-col gap-5 rounded-3xl border border-border bg-card p-6 sm:flex-row"
+            >
+              <div className="relative h-40 w-full shrink-0 overflow-hidden rounded-2xl sm:h-32 sm:w-32">
+                <Image
+                  src={member.photo}
+                  alt={`Retrato de ${member.name}`}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 640px) 100vw, 128px"
+                />
+              </div>
+              <div>
+                <h3 className="font-heading text-lg font-bold text-foreground">
+                  {member.name}
+                </h3>
+                <p className="text-sm font-semibold text-primary">
+                  {member.role}
+                </p>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  {member.bio}
+                </p>
+              </div>
+            </article>
+          ))}
         </div>
       </section>
 
