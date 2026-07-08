@@ -11,6 +11,7 @@ export const navLinks = [
   { href: '/', label: 'Inicio' },
   { href: '/quienes-somos', label: '¿Quiénes somos?' },
   { href: '/actividades', label: 'Actividades' },
+  { href: '/recursos-didacticos', label: 'Recursos didácticos' },
   { href: '/descargas', label: 'Descargas' },
   { href: '/participa', label: 'Participa' },
 ]
@@ -63,6 +64,7 @@ export type Download = {
   description: string
   type: string
   size: string
+  href?: string
 }
 
 export const downloads: Download[] = [
@@ -82,9 +84,11 @@ export const downloads: Download[] = [
   },
   {
     title: 'Cartel del proyecto',
-    description: 'Cartel imprimible para anunciar la visita en el centro.',
-    type: 'PNG',
-    size: '0,9 MB',
+    description:
+      'Cartel didáctico en A4 listo para imprimir y anunciar la visita en el centro.',
+    type: 'PDF',
+    size: '0,2 MB',
+    href: '/downloads/cartel-una-cientifica-en-tu-cole.pdf',
   },
   {
     title: 'Fichas «Mujeres en la ciencia»',
