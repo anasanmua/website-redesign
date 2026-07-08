@@ -1,8 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { Check, Send } from 'lucide-react'
+import { Check, Send, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { sendParticipation } from '@/app/actions/send-participation'
 
 const CONTACT_EMAIL = 'proyecto@cientificacoleandaluz.es'
 
@@ -15,9 +16,11 @@ const roles = [
 
 export function ParticipaForm() {
   const [submitted, setSubmitted] = useState(false)
+  const [sending, setSending] = useState(false)
+  const [sendError, setSendError] = useState<string | null>(null)
   const [errors, setErrors] = useState<Record<string, boolean>>({})
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const form = e.currentTarget
     const data = new FormData(form)
@@ -31,31 +34,22 @@ export function ParticipaForm() {
     if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) next.email = true
 
     setErrors(next)
-    if (Object.keys(next).length === 0) {
-      const name = (data.get('name') as string) ?? ''
-      const role = (data.get('role') as string) ?? ''
-      const center = (data.get('center') as string) ?? ''
-      const message = (data.get('message') as string) ?? ''
+    if (Object.keys(next).length > 0) return
 
-      const subject = `Solicitud de participación – ${name}`
-      const body = [
-        `Nombre: ${name}`,
-        `Correo: ${email}`,
-        `Perfil: ${role}`,
-        center.trim() ? `Centro / organización: ${center}` : null,
-        '',
-        'Mensaje:',
-        message,
-      ]
-        .filter((line) => line !== null)
-        .join('\n')
-
-      window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
-        subject,
-      )}&body=${encodeURIComponent(body)}`
-
-      setSubmitted(true)
-      form.reset()
+    setSendError(null)
+    setSending(true)
+    try {
+      const result = await sendParticipation(data)
+      if (result.ok) {
+        setSubmitted(true)
+        form.reset()
+      } else {
+        setSendError(result.error ?? 'No se pudo enviar. Inténtalo de nuevo.')
+      }
+    } catch {
+      setSendError('No se pudo enviar. Inténtalo de nuevo.')
+    } finally {
+      setSending(false)
     }
   }
 
@@ -69,15 +63,9 @@ export function ParticipaForm() {
           ¡Gracias por tu interés!
         </h2>
         <p className="max-w-md text-muted-foreground">
-          Se ha abierto tu gestor de correo con el mensaje dirigido a{' '}
-          <a
-            href={`mailto:${CONTACT_EMAIL}`}
-            className="font-medium text-primary underline-offset-2 hover:underline"
-          >
-            {CONTACT_EMAIL}
-          </a>
-          . Solo tienes que pulsar enviar y nos pondremos en contacto contigo lo
-          antes posible.
+          Hemos recibido tu solicitud y la hemos enviado a{' '}
+          <span className="font-medium text-primary">{CONTACT_EMAIL}</span>. Nos
+          pondremos en contacto contigo lo antes posible.
         </p>
         <Button
           type="button"
@@ -176,9 +164,29 @@ export function ParticipaForm() {
         )}
       </div>
 
-      <Button type="submit" size="lg" className="rounded-full">
-        <Send className="mr-1.5 h-4 w-4" />
-        Enviar solicitud
+      {sendError && (
+        <p className="rounded-xl border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+          {sendError}
+        </p>
+      )}
+
+      <Button
+        type="submit"
+        size="lg"
+        className="rounded-full"
+        disabled={sending}
+      >
+        {sending ? (
+          <>
+            <Loader2 className="mr-1.5 h-4 w-4 animate-spin" />
+            Enviando…
+          </>
+        ) : (
+          <>
+            <Send className="mr-1.5 h-4 w-4" />
+            Enviar solicitud
+          </>
+        )}
       </Button>
     </form>
   )
