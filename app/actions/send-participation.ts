@@ -42,6 +42,10 @@ export async function sendParticipation(
     process.env.RESEND_FROM_EMAIL ??
     'Una Científica en tu Cole <no-reply@cientificacoleandaluz.es>'
 
+  // Copia de seguridad: cada solicitud se envía también a esta dirección.
+  // Configurable con RESEND_CC_EMAIL.
+  const ccEmail = process.env.RESEND_CC_EMAIL ?? 'correo.docu.us@gmail.com'
+
   const text = [
     `Nombre: ${name}`,
     `Correo: ${email}`,
@@ -72,6 +76,7 @@ export async function sendParticipation(
     const { error } = await resend.emails.send({
       from: fromEmail,
       to: [CONTACT_EMAIL],
+      cc: ccEmail ? [ccEmail] : undefined,
       replyTo: email,
       subject: `Solicitud de participación – ${name}`,
       text,
