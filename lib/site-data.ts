@@ -11,6 +11,7 @@ export const navLinks = [
   { href: '/', label: 'Inicio' },
   { href: '/quienes-somos', label: '¿Quiénes somos?' },
   { href: '/actividades', label: 'Actividades' },
+  { href: '/recursos-didacticos', label: 'Recursos didácticos' },
   { href: '/descargas', label: 'Descargas' },
   { href: '/participa', label: 'Participa' },
 ]
