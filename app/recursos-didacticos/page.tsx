@@ -1,8 +1,42 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
-import { ArrowUpRight, Sparkles } from 'lucide-react'
+import {
+  ArrowUpRight,
+  BookOpen,
+  Film,
+  LayoutGrid,
+  Puzzle,
+  Sparkles,
+} from 'lucide-react'
 import { PageHero } from '@/components/page-hero'
 import { SectionHeading } from '@/components/section-heading'
+
+const mujeresCienciaRecursos = [
+  {
+    icon: BookOpen,
+    title: 'Guía didáctica',
+    description:
+      'Material de apoyo para el profesorado con propuestas para trabajar en el aula.',
+  },
+  {
+    icon: LayoutGrid,
+    title: 'Paneles gráficos',
+    description:
+      'Paneles expositivos que dan visibilidad a científicas y tecnólogas andaluzas.',
+  },
+  {
+    icon: Puzzle,
+    title: 'Puzzle didáctico',
+    description:
+      'Puzzle didáctico y puzzle con preguntas para aprender jugando.',
+  },
+  {
+    icon: Film,
+    title: 'Cápsulas audiovisuales',
+    description:
+      'Vídeos breves sobre Ciencia, Ingeniería, Tecnología y Matemáticas.',
+  },
+]
 
 export const metadata: Metadata = {
   title: 'Recursos Didácticos · Una Científica en tu Cole Andaluz',
@@ -64,6 +98,47 @@ export default function RecursosDidacticosPage() {
               className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.02]"
             >
               Descubre la campaña #NoMoreMatildas
+              <ArrowUpRight className="h-4 w-4" />
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-border bg-secondary/40">
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-20">
+          <SectionHeading
+            eyebrow="Instituto Andaluz de la Mujer"
+            title="Mujeres, Ciencia y Tecnología"
+            description="Un proyecto del Instituto Andaluz de la Mujer que saca a la luz a científicas, ingenieras, tecnólogas y matemáticas andaluzas que han permanecido en el anonimato a pesar de sus logros."
+          />
+
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {mujeresCienciaRecursos.map((recurso) => (
+              <article
+                key={recurso.title}
+                className="flex flex-col gap-3 rounded-3xl border border-border bg-card p-6"
+              >
+                <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                  <recurso.icon className="h-5 w-5" />
+                </span>
+                <h3 className="font-heading text-base font-bold text-foreground">
+                  {recurso.title}
+                </h3>
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  {recurso.description}
+                </p>
+              </article>
+            ))}
+          </div>
+
+          <div className="mt-8">
+            <a
+              href="https://www.juntadeandalucia.es/iamindex.php/areas-tematicas-coeducacion/curso-2018-2019/mujeres-ciencia-y-tecnologia"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.02]"
+            >
+              Accede a los recursos de mujeres científicas
               <ArrowUpRight className="h-4 w-4" />
             </a>
           </div>
