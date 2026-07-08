@@ -15,6 +15,7 @@ const roles = [
 
 export function ParticipaForm() {
   const [submitted, setSubmitted] = useState(false)
+  const [mailtoHref, setMailtoHref] = useState(`mailto:${CONTACT_EMAIL}`)
   const [errors, setErrors] = useState<Record<string, boolean>>({})
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -50,9 +51,24 @@ export function ParticipaForm() {
         .filter((line) => line !== null)
         .join('\n')
 
-      window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
+      const href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
         subject,
       )}&body=${encodeURIComponent(body)}`
+
+      setMailtoHref(href)
+
+      // Intento de abrir el gestor de correo. En algunos navegadores/entornos
+      // (como vistas previas dentro de un iframe) puede bloquearse, por eso
+      // en la pantalla de confirmación mostramos también un enlace directo.
+      const opener = window.open(href, '_blank')
+      if (!opener) {
+        const link = document.createElement('a')
+        link.href = href
+        link.rel = 'noopener noreferrer'
+        document.body.appendChild(link)
+        link.click()
+        link.remove()
+      }
 
       setSubmitted(true)
       form.reset()
@@ -69,24 +85,35 @@ export function ParticipaForm() {
           ¡Gracias por tu interés!
         </h2>
         <p className="max-w-md text-muted-foreground">
-          Se ha abierto tu gestor de correo con el mensaje dirigido a{' '}
+          Hemos preparado tu mensaje para{' '}
           <a
             href={`mailto:${CONTACT_EMAIL}`}
             className="font-medium text-primary underline-offset-2 hover:underline"
           >
             {CONTACT_EMAIL}
           </a>
-          . Solo tienes que pulsar enviar y nos pondremos en contacto contigo lo
-          antes posible.
+          . Si tu gestor de correo no se ha abierto solo, pulsa el botón de abajo
+          para abrirlo y enviarlo.
         </p>
-        <Button
-          type="button"
-          variant="outline"
-          className="rounded-full"
-          onClick={() => setSubmitted(false)}
-        >
-          Enviar otra solicitud
-        </Button>
+        <div className="flex flex-col gap-2 sm:flex-row">
+          <a
+            href={mailtoHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-1.5 rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.02]"
+          >
+            <Send className="h-4 w-4" />
+            Abrir correo y enviar
+          </a>
+          <Button
+            type="button"
+            variant="outline"
+            className="rounded-full"
+            onClick={() => setSubmitted(false)}
+          >
+            Enviar otra solicitud
+          </Button>
+        </div>
       </div>
     )
   }
