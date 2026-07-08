@@ -36,6 +36,12 @@ export async function sendParticipation(
 
   const resend = new Resend(apiKey)
 
+  // Remitente. Debe pertenecer a un dominio verificado en Resend.
+  // Una vez verificado "cientificacoleandaluz.es", este remitente funcionará.
+  const fromEmail =
+    process.env.RESEND_FROM_EMAIL ??
+    'Una Científica en tu Cole <no-reply@cientificacoleandaluz.es>'
+
   const text = [
     `Nombre: ${name}`,
     `Correo: ${email}`,
@@ -64,7 +70,7 @@ export async function sendParticipation(
 
   try {
     const { error } = await resend.emails.send({
-      from: 'Una Científica en tu Cole <onboarding@resend.dev>',
+      from: fromEmail,
       to: [CONTACT_EMAIL],
       replyTo: email,
       subject: `Solicitud de participación – ${name}`,
