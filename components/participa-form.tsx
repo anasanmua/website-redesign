@@ -1,8 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { Check, Send } from 'lucide-react'
+import { Check, Send, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { sendParticipation } from '@/app/actions/send-participation'
 
 const CONTACT_EMAIL = 'proyecto@cientificacoleandaluz.es'
 
@@ -15,10 +16,11 @@ const roles = [
 
 export function ParticipaForm() {
   const [submitted, setSubmitted] = useState(false)
-  const [mailtoHref, setMailtoHref] = useState(`mailto:${CONTACT_EMAIL}`)
+  const [sending, setSending] = useState(false)
+  const [sendError, setSendError] = useState<string | null>(null)
   const [errors, setErrors] = useState<Record<string, boolean>>({})
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const form = e.currentTarget
     const data = new FormData(form)
@@ -32,46 +34,22 @@ export function ParticipaForm() {
     if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) next.email = true
 
     setErrors(next)
-    if (Object.keys(next).length === 0) {
-      const name = (data.get('name') as string) ?? ''
-      const role = (data.get('role') as string) ?? ''
-      const center = (data.get('center') as string) ?? ''
-      const message = (data.get('message') as string) ?? ''
+    if (Object.keys(next).length > 0) return
 
-      const subject = `Solicitud de participación – ${name}`
-      const body = [
-        `Nombre: ${name}`,
-        `Correo: ${email}`,
-        `Perfil: ${role}`,
-        center.trim() ? `Centro / organización: ${center}` : null,
-        '',
-        'Mensaje:',
-        message,
-      ]
-        .filter((line) => line !== null)
-        .join('\n')
-
-      const href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
-        subject,
-      )}&body=${encodeURIComponent(body)}`
-
-      setMailtoHref(href)
-
-      // Intento de abrir el gestor de correo. En algunos navegadores/entornos
-      // (como vistas previas dentro de un iframe) puede bloquearse, por eso
-      // en la pantalla de confirmación mostramos también un enlace directo.
-      const opener = window.open(href, '_blank')
-      if (!opener) {
-        const link = document.createElement('a')
-        link.href = href
-        link.rel = 'noopener noreferrer'
-        document.body.appendChild(link)
-        link.click()
-        link.remove()
+    setSendError(null)
+    setSending(true)
+    try {
+      const result = await sendParticipation(data)
+      if (result.ok) {
+        setSubmitted(true)
+        form.reset()
+      } else {
+        setSendError(result.error ?? 'No se pudo enviar. Inténtalo de nuevo.')
       }
-
-      setSubmitted(true)
-      form.reset()
+    } catch {
+      setSendError('No se pudo enviar. Inténtalo de nuevo.')
+    } finally {
+      setSending(false)
     }
   }
 
@@ -85,35 +63,18 @@ export function ParticipaForm() {
           ¡Gracias por tu interés!
         </h2>
         <p className="max-w-md text-muted-foreground">
-          Hemos preparado tu mensaje para{' '}
-          <a
-            href={`mailto:${CONTACT_EMAIL}`}
-            className="font-medium text-primary underline-offset-2 hover:underline"
-          >
-            {CONTACT_EMAIL}
-          </a>
-          . Si tu gestor de correo no se ha abierto solo, pulsa el botón de abajo
-          para abrirlo y enviarlo.
+          Hemos recibido tu solicitud y la hemos enviado a{' '}
+          <span className="font-medium text-primary">{CONTACT_EMAIL}</span>. Nos
+          pondremos en contacto contigo lo antes posible.
         </p>
-        <div className="flex flex-col gap-2 sm:flex-row">
-          <a
-            href={mailtoHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-1.5 rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.02]"
-          >
-            <Send className="h-4 w-4" />
-            Abrir correo y enviar
-          </a>
-          <Button
-            type="button"
-            variant="outline"
-            className="rounded-full"
-            onClick={() => setSubmitted(false)}
-          >
-            Enviar otra solicitud
-          </Button>
-        </div>
+        <Button
+          type="button"
+          variant="outline"
+          className="rounded-full"
+          onClick={() => setSubmitted(false)}
+        >
+          Enviar otra solicitud
+        </Button>
       </div>
     )
   }
@@ -203,9 +164,29 @@ export function ParticipaForm() {
         )}
       </div>
 
-      <Button type="submit" size="lg" className="rounded-full">
-        <Send className="mr-1.5 h-4 w-4" />
-        Enviar solicitud
+      {sendError && (
+        <p className="rounded-xl border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+          {sendError}
+        </p>
+      )}
+
+      <Button
+        type="submit"
+        size="lg"
+        className="rounded-full"
+        disabled={sending}
+      >
+        {sending ? (
+          <>
+            <Loader2 className="mr-1.5 h-4 w-4 animate-spin" />
+            Enviando…
+          </>
+        ) : (
+          <>
+            <Send className="mr-1.5 h-4 w-4" />
+            Enviar solicitud
+          </>
+        )}
       </Button>
     </form>
   )
